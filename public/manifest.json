@@ -6,6 +6,13 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "tabbed",
+    "standalone",
+    "minimal-ui",
+    "browser"
+  ],
   "orientation": "any",
   "background_color": "#181818",
   "theme_color": "#181818",
@@ -14,6 +21,17 @@
   "categories": [
     "productivity",
     "utilities"
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+  "scope_extensions": [
+    {
+      "origin": "https://ais-dev-ulwwx2ip6miaowwli6sx6x-172646233504.europe-west2.run.app"
+    },
+    {
+      "origin": "https://ais-pre-ulwwx2ip6miaowwli6sx6x-172646233504.europe-west2.run.app"
+    }
   ],
   "icons": [
     {
@@ -46,20 +64,153 @@
       "type": "image/x-icon"
     }
   ],
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Notepad-XR Fluent Workspace for Desktop"
+    },
+    {
+      "src": "/screenshot-narrow.jpg",
+      "sizes": "750x1334",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Notepad-XR Mobile View"
+    }
+  ],
   "shortcuts": [
     {
       "name": "New Document",
       "short_name": "New Doc",
       "description": "Create a new document in Notepad-XR",
       "url": "/?action=new",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Frame Sliders",
       "short_name": "Sliders",
       "description": "Open Frame Sliders deck",
       "url": "/?action=sliders",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
-  ]
+  ],
+  "file_handlers": [
+    {
+      "action": "/?action=open-file",
+      "name": "Text Document",
+      "accept": {
+        "text/plain": [".txt", ".text"],
+        "text/markdown": [".md", ".markdown"],
+        "application/json": [".json"],
+        "text/csv": [".csv"],
+        "text/x-log": [".log"],
+        "text/javascript": [".js", ".mjs"],
+        "text/typescript": [".ts", ".tsx"],
+        "text/html": [".html", ".htm"],
+        "text/css": [".css"],
+        "text/xml": [".xml"]
+      },
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ],
+      "launch_type": "single-client"
+    }
+  ],
+  "launch_handler": {
+    "client_mode": [
+      "navigate-existing",
+      "auto"
+    ]
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "web+notepad",
+      "url": "/?url=%s"
+    },
+    {
+      "protocol": "web+note",
+      "url": "/?url=%s"
+    }
+  ],
+  "share_target": {
+    "action": "/?action=share-target",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "files",
+          "accept": [
+            "text/*",
+            "application/json",
+            ".txt",
+            ".md",
+            ".json",
+            ".csv",
+            ".log"
+          ]
+        }
+      ]
+    }
+  ],
+  "widgets": [
+    {
+      "name": "Notepad-XR Quick Note",
+      "short_name": "Quick Note",
+      "description": "Quickly create or view notes in Notepad-XR",
+      "tag": "notepad-quick-note",
+      "template": "quick-note-widget",
+      "ms_ac_template": "/widgets/quick-note.json",
+      "data": "/widgets/quick-note-data.json",
+      "type": "application/json",
+      "screenshots": [
+        {
+          "src": "/screenshot-wide.jpg",
+          "sizes": "1280x720",
+          "label": "Widget Preview"
+        }
+      ],
+      "icons": [
+        {
+          "src": "/icon-192.png",
+          "sizes": "192x192"
+        }
+      ],
+      "auth": false,
+      "update": 86400
+    }
+  ],
+  "edge_side_panel": {
+    "preferred_width": 480
+  },
+  "tab_strip": {
+    "home_tab": {
+      "url": "/",
+      "scope": "/"
+    },
+    "new_tab_button": {
+      "url": "/?action=new"
+    }
+  },
+  "note_taking": {
+    "new_note_url": "/?action=new_note"
+  }
 }

@@ -200,6 +200,105 @@ export default function App() {
     };
   }, []);
 
+  // PWA File Handling (Chromium LaunchQueue), Protocol Handling & Share Target Receiver
+  useEffect(() => {
+    // 1. Check LaunchQueue for files opened from OS Explorer / Finder
+    if ('launchQueue' in window && 'setConsumer' in (window as any).launchQueue) {
+      (window as any).launchQueue.setConsumer(async (launchParams: any) => {
+        if (!launchParams.files || launchParams.files.length === 0) return;
+        for (const fileHandle of launchParams.files) {
+          try {
+            const file = await fileHandle.getFile();
+            const parsed = await parseDocumentFile(file);
+            const newDocId = `doc-file-${Date.now()}`;
+            const newDoc: NotepadDocument = {
+              id: newDocId,
+              title: parsed.title || file.name,
+              content: parsed.content,
+              plainText: parsed.plainText,
+              isDirty: false,
+              fileType: parsed.fileType,
+              encoding: 'UTF-8',
+              lineEnding: 'CRLF',
+              folderId: 'notepad-xr',
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString()
+            };
+            setDocuments(prev => [...prev, newDoc]);
+            setOpenDocIds(prev => [...prev, newDocId]);
+            setActiveId(newDocId);
+          } catch (e) {
+            console.error('Error handling launched file:', e);
+          }
+        }
+      });
+    }
+
+    // 2. Check URL Query Parameters for PWA Actions / Share Target / Protocols
+    const urlParams = new URLSearchParams(window.location.search);
+    const action = urlParams.get('action');
+
+    if (action === 'new' || action === 'new_note') {
+      handleNewTab();
+      window.history.replaceState({}, '', '/');
+    } else if (action === 'shared-content') {
+      // Retrieve shared content cached by Service Worker
+      caches.open('notepad-xr-cache-v2').then(async (cache) => {
+        const cached = await cache.match('/_shared_pwa_content');
+        if (cached) {
+          try {
+            const data = await cached.json();
+            const newDocId = `doc-shared-${Date.now()}`;
+            const cleanTitle = data.title || 'Shared Note';
+            const cleanContent = data.text ? `<p>${data.text.replace(/\n/g, '<br/>')}</p>` : '';
+            const newDoc: NotepadDocument = {
+              id: newDocId,
+              title: cleanTitle,
+              content: cleanContent,
+              plainText: data.text || '',
+              isDirty: true,
+              fileType: 'plain',
+              encoding: 'UTF-8',
+              lineEnding: 'CRLF',
+              folderId: 'notepad-xr',
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString()
+            };
+            setDocuments(prev => [...prev, newDoc]);
+            setOpenDocIds(prev => [...prev, newDocId]);
+            setActiveId(newDocId);
+            cache.delete('/_shared_pwa_content');
+          } catch (e) {
+            console.error('Failed to parse shared PWA content:', e);
+          }
+        }
+      });
+      window.history.replaceState({}, '', '/');
+    } else if (urlParams.get('title') || urlParams.get('text')) {
+      // Direct GET share target
+      const title = urlParams.get('title') || 'Shared Note';
+      const text = urlParams.get('text') || '';
+      const newDocId = `doc-shared-${Date.now()}`;
+      const newDoc: NotepadDocument = {
+        id: newDocId,
+        title,
+        content: text ? `<p>${text.replace(/\n/g, '<br/>')}</p>` : '',
+        plainText: text,
+        isDirty: true,
+        fileType: 'plain',
+        encoding: 'UTF-8',
+        lineEnding: 'CRLF',
+        folderId: 'notepad-xr',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      setDocuments(prev => [...prev, newDoc]);
+      setOpenDocIds(prev => [...prev, newDocId]);
+      setActiveId(newDocId);
+      window.history.replaceState({}, '', '/');
+    }
+  }, []);
+
   // 3-Second Debounced Autosave
   useEffect(() => {
     const activeDocument = documents.find(d => d.id === activeId);

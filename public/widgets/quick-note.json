@@ -1,0 +1,31 @@
+{
+  "type": "AdaptiveCard",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.5",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Notepad-XR Quick Note",
+      "weight": "Bolder",
+      "size": "Medium"
+    },
+    {
+      "type": "TextBlock",
+      "text": "${latestNote}",
+      "wrap": true,
+      "maxLines": 4
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.OpenUrl",
+      "title": "New Note",
+      "url": "/?action=new_note"
+    },
+    {
+      "type": "Action.OpenUrl",
+      "title": "Open Notepad-XR",
+      "url": "/"
+    }
+  ]
+}
