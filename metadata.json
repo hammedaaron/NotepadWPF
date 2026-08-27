@@ -1,0 +1,8 @@
+{
+  "name": "Notepad-XR",
+  "description": "Notepad-XR - Modern Windows 11 Fluent Notepad with nested subpages, frame sliders, rich formatting, 3-second autosave, and full offline PWA support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

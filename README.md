@@ -1,16 +1,21 @@
-# .NETpad (C#/WPF version)
+# .NETpad (Web / React version)
 
 ![.NETpad hero image](/hero.jpg)
 
-.NETpad is a basic clone of Microsoft Notepad that was created by Paul Thurrott ([@thurrott](https://www.twitter.com/thurrott)) with the help of Rafael Rivera ([@withinrafael](https://www.twitter.com/withinrafael)), several outside contributors, and, thanks to his books, Charles Petzold. This version is slightly more sophisticated than the Windows Forms version, but it could still have bugs. 
+**.NETpad** is a full-featured web migration of the WPF-based .NETpad application originally created by Paul Thurrott and Rafael Rivera.
 
-.NETpad (WPF) provides most Notepad features, albeit in U.S. English only, and adds a few additional features that Notepad lacks, including:
+## Features
 
-- Optional auto-save every 30 seconds
-- Themes with the ability to arbitrarily choose a new background and text color
-- Display scaling - Switch the main applicaton window between 100, 110, 125, 150, and 175 percent scaling
-- Word count, displayed in the status bar
+- **Document Management**: Create (New), Open, Save, Save As, Auto-Save (every 30 seconds), Drag-and-drop plain text files (.txt, .text), and Print documents.
+- **Editing Suite**: Complete Undo, Cut, Copy, Paste, Delete, Select All, Insert Time/Date (F5), and Search with Bing (Ctrl+E).
+- **Search & Navigation**: Find, Find Next (F3), Find Previous (Shift+F3), Replace, Replace All, and Go to Line (Ctrl+G).
+- **Themes & Styling**: 
+  - Presets: Black on White (Default), Black on Light Gray, Amber on Black, Green on Black.
+  - Custom foreground and background color pickers.
+- **Typography & Layout**: Font family selection, style (Regular, Bold, Italic, Bold Italic), font size (8–72px), live sample preview, and Word Wrap toggle.
+- **Display Scaling & Zoom**:
+  - Application scale factors: 100%, 110%, 125%, 150%, 175%.
+  - Zoom range: 10% to 500% with Ctrl+Plus / Ctrl+Minus shortcuts.
+- **Status Bar**: Real-time Line & Column position (Ln, Col), Zoom percentage, live Word Count, and Auto-Save status indicator.
+- **Settings Persistence**: Saves user preferences (colors, fonts, layout, scaling, window state) across sessions in browser storage.
 
-[I documented how I created this app on Thurrott.com](https://www.thurrott.com/tag/the-wpf-notepad-project).  I will consider updating this app with some more modern features and bug fixes. 
-
-This version of .NETpad should work on all supported versions of Windows 10 and Windows 11.
