@@ -20,15 +20,16 @@ import { NotepadCopilotModal } from './components/NotepadCopilotModal';
 import { AppleNotesSidebar } from './components/AppleNotesSidebar';
 import { NestedPageDrawer } from './components/NestedPageDrawer';
 import { ConfirmDeleteModal } from './components/ConfirmDeleteModal';
+import { NotepadXRSplashScreen } from './components/NotepadXRSplashScreen';
 import { parseDocumentFile } from './utils/universalDocumentParser';
 import { exportDocument, ExportFormat } from './utils/documentExporter';
 import { INITIAL_DOCS, INITIAL_FOLDERS } from './data/initialData';
 
-const STORAGE_KEY_DOCS = 'win11_notepad_docs_v4';
-const STORAGE_KEY_FOLDERS = 'win11_notepad_folders_v4';
-const STORAGE_KEY_ACTIVE = 'win11_notepad_active_v4';
-const STORAGE_KEY_SETTINGS = 'win11_notepad_settings_v4';
-const STORAGE_KEY_OPEN_TABS = 'win11_notepad_open_tabs_v4';
+const STORAGE_KEY_DOCS = 'win11_notepad_docs_v5';
+const STORAGE_KEY_FOLDERS = 'win11_notepad_folders_v5';
+const STORAGE_KEY_ACTIVE = 'win11_notepad_active_v5';
+const STORAGE_KEY_SETTINGS = 'win11_notepad_settings_v5';
+const STORAGE_KEY_OPEN_TABS = 'win11_notepad_open_tabs_v5';
 
 const DEFAULT_SETTINGS: NotepadSettings = {
   theme: 'dark', // Native dark mode
@@ -45,7 +46,25 @@ const DEFAULT_SETTINGS: NotepadSettings = {
   smartFolderReducedClutter: false
 };
 
+const BLANK_DEFAULT_DOC: NotepadDocument = {
+  id: 'doc-blank-default',
+  title: 'Untitled',
+  content: '',
+  plainText: '',
+  isDirty: false,
+  fileType: 'plain',
+  encoding: 'UTF-8',
+  lineEnding: 'CRLF',
+  folderId: 'notepad-xr',
+  isPinned: false,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString()
+};
+
 export default function App() {
+  // Splash Screen State (Shown whenever app is launched / opened)
+  const [showSplash, setShowSplash] = useState<boolean>(true);
+
   // Folders State
   const [folders, setFolders] = useState<NoteFolder[]>(() => {
     try {
@@ -60,6 +79,7 @@ export default function App() {
   const [selectedFolderId, setSelectedFolderId] = useState<string>('all');
 
   // Documents state (All saved notes in database/storage)
+  // Default to a completely blank clean document
   const [documents, setDocuments] = useState<NotepadDocument[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_DOCS);
@@ -70,10 +90,10 @@ export default function App() {
     } catch (e) {
       console.error(e);
     }
-    return INITIAL_DOCS;
+    return [BLANK_DEFAULT_DOC];
   });
 
-  // Open Tab IDs (Closing a tab removes it from here, but does NOT delete the note!)
+  // Open Tab IDs (Default to a single fresh blank tab)
   const [openDocIds, setOpenDocIds] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_OPEN_TABS);
@@ -84,10 +104,10 @@ export default function App() {
     } catch (e) {
       console.error(e);
     }
-    return ['doc-product-spec', 'doc-todo-list'];
+    return ['doc-blank-default'];
   });
 
-  // Active Document ID (Default to product spec showcasing nested pages & frames)
+  // Active Document ID (Default to the blank clean document)
   const [activeId, setActiveId] = useState<string>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_ACTIVE);
@@ -95,7 +115,7 @@ export default function App() {
     } catch (e) {
       console.error(e);
     }
-    return 'doc-product-spec';
+    return 'doc-blank-default';
   });
 
   // Settings
@@ -1203,6 +1223,14 @@ export default function App() {
         }}
         isDark={isDark}
       />
+
+      {/* 7. Circulating Google AI Studio style Splash Page (resets every 24 hours) */}
+      {showSplash && (
+        <NotepadXRSplashScreen
+          onDismiss={() => setShowSplash(false)}
+          isDark={isDark}
+        />
+      )}
     </div>
   );
 }
