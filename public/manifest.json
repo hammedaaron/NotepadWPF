@@ -1,5 +1,5 @@
 {
-  "id": "/?source=pwa",
+  "id": "/",
   "name": "Notepad-XR",
   "short_name": "Notepad-XR",
   "description": "Windows 11 Fluent Notepad with nested pages, frame sliders, rich formatting, and 100% offline support.",
@@ -27,6 +27,9 @@
   "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
   "scope_extensions": [
     {
+      "origin": "https://notepad-wpf.vercel.app"
+    },
+    {
       "origin": "https://ais-dev-ulwwx2ip6miaowwli6sx6x-172646233504.europe-west2.run.app"
     },
     {
@@ -41,7 +44,19 @@
       "purpose": "any"
     },
     {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
@@ -57,6 +72,11 @@
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
     },
     {
       "src": "/Icon.ico",
@@ -89,7 +109,8 @@
       "icons": [
         {
           "src": "/icon-192.png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ]
     },
@@ -101,14 +122,15 @@
       "icons": [
         {
           "src": "/icon-192.png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ]
     }
   ],
   "file_handlers": [
     {
-      "action": "/?action=open-file",
+      "action": "/",
       "name": "Text Document",
       "accept": {
         "text/plain": [".txt", ".text"],
@@ -125,7 +147,8 @@
       "icons": [
         {
           "src": "/icon-192.png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ],
       "launch_type": "single-client"
@@ -148,7 +171,7 @@
     }
   ],
   "share_target": {
-    "action": "/?action=share-target",
+    "action": "/",
     "method": "POST",
     "enctype": "multipart/form-data",
     "params": {
@@ -159,8 +182,11 @@
         {
           "name": "files",
           "accept": [
-            "text/*",
+            "text/plain",
+            "text/markdown",
             "application/json",
+            "text/csv",
+            "text/x-log",
             ".txt",
             ".md",
             ".json",
@@ -185,13 +211,15 @@
         {
           "src": "/screenshot-wide.jpg",
           "sizes": "1280x720",
+          "type": "image/jpeg",
           "label": "Widget Preview"
         }
       ],
       "icons": [
         {
           "src": "/icon-192.png",
-          "sizes": "192x192"
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ],
       "auth": false,

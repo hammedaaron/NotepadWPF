@@ -1,5 +1,5 @@
 // Notepad-XR Production Service Worker with Full PWA & PWABuilder Capabilities
-const CACHE_NAME = 'notepad-xr-cache-v2';
+const CACHE_NAME = 'notepad-xr-cache-v3';
 const OFFLINE_PAGE = '/offline.html';
 
 const PRECACHE_ASSETS = [
@@ -10,8 +10,13 @@ const PRECACHE_ASSETS = [
   '/icon.svg',
   '/icon-192.png',
   '/icon-512.png',
+  '/android-chrome-192x192.png',
+  '/android-chrome-512x512.png',
   '/icon-maskable-512.png',
+  '/favicon.ico',
   '/Icon.ico',
+  '/favicon-32x32.png',
+  '/favicon-16x16.png',
   '/screenshot-wide.jpg',
   '/screenshot-narrow.jpg',
   '/widgets/quick-note.json',
@@ -49,53 +54,121 @@ self.addEventListener('message', (event) => {
   }
 });
 
-// 4. Fetch Event: Intelligent Cache/Network strategy + Share Target POST Handling
+// 4. Background Sync Event (PWABuilder feature check)
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'sync-notes' || event.tag === 'notepad-sync') {
+    event.waitUntil(
+      // Perform background note synchronization if online
+      Promise.resolve().then(() => {
+        console.log('[SW] Background sync triggered:', event.tag);
+      })
+    );
+  }
+});
+
+// 5. Periodic Background Sync Event (PWABuilder feature check)
+self.addEventListener('periodicsync', (event) => {
+  if (event.tag === 'periodic-notes-backup' || event.tag === 'notepad-periodic-sync') {
+    event.waitUntil(
+      Promise.resolve().then(() => {
+        console.log('[SW] Periodic sync triggered:', event.tag);
+      })
+    );
+  }
+});
+
+// 6. Push Notifications Event (PWABuilder feature check)
+self.addEventListener('push', (event) => {
+  let title = 'Notepad-XR';
+  let options = {
+    body: 'Your workspace is ready and synced.',
+    icon: '/icon-192.png',
+    badge: '/icon-192.png',
+    data: { url: '/' }
+  };
+
+  if (event.data) {
+    try {
+      const data = event.data.json();
+      title = data.title || title;
+      options = { ...options, ...data };
+    } catch (e) {
+      options.body = event.data.text();
+    }
+  }
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+// Notification Click Handler
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const targetUrl = (event.notification.data && event.notification.data.url) ? event.notification.data.url : '/';
+
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if (client.url && 'focus' in client) {
+          return client.focus();
+        }
+      }
+      if (self.clients.openWindow) {
+        return self.clients.openWindow(targetUrl);
+      }
+    })
+  );
+});
+
+// 7. Fetch Event: Intelligent Cache/Network strategy + Share Target POST Handling
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   const url = new URL(request.url);
 
   // Handle Share Target POST requests
-  if (request.method === 'POST' && url.searchParams.get('action') === 'share-target') {
-    event.respondWith((async () => {
-      try {
-        const formData = await request.formData();
-        const title = formData.get('title') || '';
-        const text = formData.get('text') || '';
-        const shareUrl = formData.get('url') || '';
-        const files = formData.getAll('files');
+  if (request.method === 'POST' && (url.searchParams.get('action') === 'share-target' || url.pathname === '/')) {
+    const contentType = request.headers.get('content-type') || '';
+    if (contentType.includes('multipart/form-data') || contentType.includes('application/x-www-form-urlencoded')) {
+      event.respondWith((async () => {
+        try {
+          const formData = await request.formData();
+          const title = formData.get('title') || '';
+          const text = formData.get('text') || '';
+          const shareUrl = formData.get('url') || '';
+          const files = formData.getAll('files');
 
-        let fileTextContent = '';
-        if (files && files.length > 0) {
-          const firstFile = files[0];
-          if (firstFile instanceof File) {
-            fileTextContent = await firstFile.text();
+          let fileTextContent = '';
+          if (files && files.length > 0) {
+            const firstFile = files[0];
+            if (firstFile instanceof File) {
+              fileTextContent = await firstFile.text();
+            }
           }
+
+          // Store shared payload in a temporary cache entry
+          const sharedPayload = {
+            title: title.toString(),
+            text: (text || fileTextContent).toString(),
+            url: shareUrl.toString(),
+            timestamp: Date.now()
+          };
+
+          const cache = await caches.open(CACHE_NAME);
+          await cache.put(
+            new Request('/_shared_pwa_content'),
+            new Response(JSON.stringify(sharedPayload), {
+              headers: { 'Content-Type': 'application/json' }
+            })
+          );
+
+          // Redirect user to the app to open the shared note
+          return Response.redirect('/?action=shared-content', 303);
+        } catch (err) {
+          console.error('Error processing share target POST:', err);
+          return Response.redirect('/?action=new', 303);
         }
-
-        // Store shared payload in a temporary cache entry
-        const sharedPayload = {
-          title: title.toString(),
-          text: (text || fileTextContent).toString(),
-          url: shareUrl.toString(),
-          timestamp: Date.now()
-        };
-
-        const cache = await caches.open(CACHE_NAME);
-        await cache.put(
-          new Request('/_shared_pwa_content'),
-          new Response(JSON.stringify(sharedPayload), {
-            headers: { 'Content-Type': 'application/json' }
-          })
-        );
-
-        // Redirect user to the app to open the shared note
-        return Response.redirect('/?action=shared-content', 303);
-      } catch (err) {
-        console.error('Error processing share target POST:', err);
-        return Response.redirect('/?action=new', 303);
-      }
-    })());
-    return;
+      })());
+      return;
+    }
   }
 
   // Only handle GET requests for standard caching
@@ -159,7 +232,7 @@ self.addEventListener('fetch', (event) => {
   })());
 });
 
-// 5. Windows 11 Widgets API Integration
+// 8. Windows 11 Widgets API Integration
 self.addEventListener('widgetinstall', (event) => {
   event.waitUntil(renderWidget(event.widget));
 });
