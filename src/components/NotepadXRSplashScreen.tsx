@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { AppLogo } from './AppLogo';
 
 interface NotepadXRSplashScreenProps {
   onDismiss: () => void;
@@ -75,22 +76,9 @@ export const NotepadXRSplashScreen: React.FC<NotepadXRSplashScreenProps> = ({ on
             className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 via-slate-200/10 to-transparent blur-md opacity-60 pointer-events-none"
           />
 
-          {/* Clean Vector Notepad-XR Icon */}
-          <div className="relative w-11 h-11 sm:w-13 sm:h-13 rounded-xl bg-[#111113] border border-white/20 flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.08)]">
-            <svg
-              className="w-6 h-6 sm:w-7 sm:h-7 text-[#f3f4f6]"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-              <polyline points="14 2 14 8 20 8" />
-              <line x1="8" y1="13" x2="16" y2="13" />
-              <line x1="8" y1="17" x2="13" y2="17" />
-            </svg>
+          {/* Clean Vector Letter-N App Logo */}
+          <div className="relative w-11 h-11 sm:w-13 sm:h-13 rounded-xl bg-[#111113] border border-white/20 flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.08)] p-2">
+            <AppLogo className="w-full h-full text-white" />
           </div>
         </div>
 

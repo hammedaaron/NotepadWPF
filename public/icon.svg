@@ -1,58 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <defs>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0f766e" />
-      <stop offset="50%" stop-color="#0284c7" />
-      <stop offset="100%" stop-color="#2563eb" />
-    </linearGradient>
-    <linearGradient id="paperGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff" />
-      <stop offset="100%" stop-color="#f1f5f9" />
-    </linearGradient>
-    <linearGradient id="penGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#f59e0b" />
-      <stop offset="100%" stop-color="#d97706" />
-    </linearGradient>
-    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
-      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.3" />
-    </filter>
-  </defs>
-
-  <!-- Background rounded rect -->
-  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
-
-  <!-- Notepad Document Sheet -->
-  <g filter="url(#shadow)">
-    <rect x="110" y="90" width="292" height="340" rx="20" fill="url(#paperGrad)" />
-    
-    <!-- Top accent binding header -->
-    <path d="M 110 110 C 110 99, 119 90, 130 90 L 382 90 C 393 90, 402 99, 402 110 L 402 145 L 110 145 Z" fill="#0284c7" />
-    <circle cx="150" cy="118" r="6" fill="#ffffff" opacity="0.8" />
-    <circle cx="256" cy="118" r="6" fill="#ffffff" opacity="0.8" />
-    <circle cx="362" cy="118" r="6" fill="#ffffff" opacity="0.8" />
-
-    <!-- Ruled text lines -->
-    <line x1="150" y1="190" x2="362" y2="190" stroke="#cbd5e1" stroke-width="8" stroke-linecap="round" />
-    <line x1="150" y1="235" x2="330" y2="235" stroke="#cbd5e1" stroke-width="8" stroke-linecap="round" />
-    <line x1="150" y1="280" x2="362" y2="280" stroke="#cbd5e1" stroke-width="8" stroke-linecap="round" />
-    <line x1="150" y1="325" x2="280" y2="325" stroke="#cbd5e1" stroke-width="8" stroke-linecap="round" />
-    <line x1="150" y1="370" x2="340" y2="370" stroke="#cbd5e1" stroke-width="8" stroke-linecap="round" />
-
-    <!-- XR Star badge on the page -->
-    <g transform="translate(325, 335)">
-      <circle cx="30" cy="30" r="32" fill="#0f172a" />
-      <text x="30" y="37" fill="#38bdf8" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="20" text-anchor="middle">XR</text>
-    </g>
-  </g>
-
-  <!-- Fluent Pen / Stylus Overlay -->
-  <g transform="translate(340, 160) rotate(42)" filter="url(#shadow)">
-    <!-- Pen body -->
-    <rect x="-14" y="-70" width="28" height="150" rx="14" fill="url(#penGrad)" />
-    <!-- Pen tip -->
-    <polygon points="-14,80 14,80 0,112" fill="#475569" />
-    <polygon points="-4,103 4,103 0,112" fill="#0f172a" />
-    <!-- Pen clip -->
-    <rect x="-4" y="-60" width="8" height="50" rx="4" fill="#fbbf24" />
-  </g>
+  <rect width="512" height="512" fill="#000000" />
+  <!-- White Geometric N -->
+  <!-- Left Vertical Bar + Top Left Extension -->
+  <polygon points="0,0 204.8,0 204.8,0 396.8,192 396.8,435.2 115.2,153.6 115.2,512 0,512" fill="#ffffff" />
+  <!-- Right Vertical Bar + Bottom Right Extension + Diagonal -->
+  <polygon points="512,512 307.2,512 115.2,320 115.2,76.8 396.8,358.4 396.8,0 512,0" fill="#ffffff" />
 </svg>

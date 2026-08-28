@@ -1,6 +1,7 @@
 import React from 'react';
 import { Plus, X, Minus, Square } from 'lucide-react';
 import { NotepadDocument } from '../types';
+import { AppLogo } from './AppLogo';
 
 interface NotepadTitleBarProps {
   documents: NotepadDocument[];
@@ -25,22 +26,9 @@ export const NotepadTitleBar: React.FC<NotepadTitleBarProps> = ({
     }`}>
       {/* Left side: Icon + Tabs */}
       <div className="flex items-center space-x-1.5 flex-1 min-w-0 overflow-x-auto no-scrollbar pr-2">
-        {/* Notepad Blue Icon */}
-        <div className="flex items-center justify-center w-7 h-7 shrink-0 mr-1.5" title="Notepad-XR">
-          <svg className="w-5 h-5" viewBox="0 0 32 32" fill="none">
-            {/* Windows 11 Notepad Icon representation */}
-            <rect x="5" y="4" width="22" height="24" rx="3.5" fill="#0078D4" />
-            <path d="M5 7.5C5 5.567 6.567 4 8.5 4H23.5C25.433 4 27 5.567 27 7.5V11H5V7.5Z" fill="#2B88D8" />
-            {/* Notepad lines */}
-            <rect x="9" y="14" width="14" height="2" rx="1" fill="#FFFFFF" fillOpacity="0.85" />
-            <rect x="9" y="18" width="14" height="2" rx="1" fill="#FFFFFF" fillOpacity="0.85" />
-            <rect x="9" y="22" width="9" height="2" rx="1" fill="#FFFFFF" fillOpacity="0.85" />
-            {/* Spiral binding rings at top */}
-            <circle cx="9" cy="4" r="1.2" fill="#FFFFFF" />
-            <circle cx="14" cy="4" r="1.2" fill="#FFFFFF" />
-            <circle cx="19" cy="4" r="1.2" fill="#FFFFFF" />
-            <circle cx="24" cy="4" r="1.2" fill="#FFFFFF" />
-          </svg>
+        {/* App Logo */}
+        <div className="flex items-center justify-center w-6 h-6 shrink-0 mr-1.5 rounded-[4px] bg-[#111113] border border-white/10 p-1" title="Notepad-XR">
+          <AppLogo className="w-full h-full text-white" />
         </div>
 
         {/* Tab Items */}
