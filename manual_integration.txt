@@ -1,0 +1,28 @@
+MANUAL PWA INTEGRATION
+======================
+If you prefer not to use the automated index.html, follow these steps:
+
+1. COPY these files to your root directory (same folder as index.html):
+   - All .png and .ico images
+   - site.webmanifest
+   - sw.js
+
+2. PASTE this into the <HEAD> section of your index.html:
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="msapplication-TileColor" content="#6366f1">
+<meta name="theme-color" content="#6366f1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Notepad-XR">
+
+3. PASTE this into the <BODY> section of your index.html:
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed:', err));
+    });
+  }
+</script>
