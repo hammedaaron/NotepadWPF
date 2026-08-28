@@ -1,5 +1,5 @@
 // Notepad-XR Production Service Worker with Full PWA & PWABuilder Capabilities
-const CACHE_NAME = 'notepad-xr-cache-v3';
+const CACHE_NAME = 'notepad-xr-cache-v4';
 const OFFLINE_PAGE = '/offline.html';
 
 const PRECACHE_ASSETS = [
