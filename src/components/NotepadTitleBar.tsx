@@ -27,8 +27,15 @@ export const NotepadTitleBar: React.FC<NotepadTitleBarProps> = ({
       {/* Left side: Icon + Tabs */}
       <div className="flex items-center space-x-1.5 flex-1 min-w-0 overflow-x-auto no-scrollbar pr-2">
         {/* App Logo */}
-        <div className="flex items-center justify-center w-6 h-6 shrink-0 mr-1.5 rounded-[4px] bg-[#111113] border border-white/10 p-1" title="Notepad-XR">
-          <AppLogo className="w-full h-full text-white" />
+        <div
+          className={`flex items-center justify-center w-6 h-6 shrink-0 mr-1.5 rounded-[5px] transition-colors ${
+            isDark
+              ? 'bg-[#1e1e20] border border-white/10 text-white hover:border-white/20'
+              : 'bg-[#e0e0e0] border border-black/10 text-[#1e1e20] hover:border-black/20'
+          }`}
+          title="Notepad-XR"
+        >
+          <AppLogo className="w-4 h-4" />
         </div>
 
         {/* Tab Items */}

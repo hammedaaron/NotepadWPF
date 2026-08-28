@@ -76,9 +76,9 @@ export const NotepadXRSplashScreen: React.FC<NotepadXRSplashScreenProps> = ({ on
             className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 via-slate-200/10 to-transparent blur-md opacity-60 pointer-events-none"
           />
 
-          {/* Clean Vector Letter-N App Logo */}
-          <div className="relative w-11 h-11 sm:w-13 sm:h-13 rounded-xl bg-[#111113] border border-white/20 flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.08)] p-2">
-            <AppLogo className="w-full h-full text-white" />
+          {/* App Logo */}
+          <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#111113] border border-white/20 flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.12)]">
+            <AppLogo className="w-8 h-8 sm:w-9 sm:h-9 text-white" />
           </div>
         </div>
 
