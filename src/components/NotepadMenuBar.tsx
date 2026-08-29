@@ -66,6 +66,7 @@ interface NotepadMenuBarProps {
   onToggleStatusBar: () => void;
   zoomLevel: number;
   onSetZoom: (zoom: number) => void;
+  onOpenInstallModal?: () => void;
 }
 
 export const NotepadMenuBar: React.FC<NotepadMenuBarProps> = ({
@@ -105,7 +106,8 @@ export const NotepadMenuBar: React.FC<NotepadMenuBarProps> = ({
   onToggleWordWrap,
   onToggleStatusBar,
   zoomLevel,
-  onSetZoom
+  onSetZoom,
+  onOpenInstallModal
 }) => {
   // Dropdown menu states
   const [activeMenu, setActiveMenu] = useState<'file' | 'edit' | 'insert' | 'view' | 'heading' | 'list' | 'table' | 'callout' | 'color' | null>(null);
@@ -260,6 +262,19 @@ export const NotepadMenuBar: React.FC<NotepadMenuBarProps> = ({
                 </div>
               </div>
 
+              <div className={dividerClass} />
+              {onOpenInstallModal && (
+                <button 
+                  onClick={() => handleMenuAction(onOpenInstallModal)} 
+                  className={`${dropdownItemClass} text-blue-400 font-medium`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Install to PC (Direct / No Store)...</span>
+                  </span>
+                  <span className="text-[10px] bg-blue-500/20 text-blue-300 px-1 py-0.5 rounded">Desktop App</span>
+                </button>
+              )}
               <div className={dividerClass} />
               <button onClick={() => handleMenuAction(onPrint)} className={dropdownItemClass}>
                 <span>Print...</span>

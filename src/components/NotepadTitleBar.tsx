@@ -10,6 +10,8 @@ interface NotepadTitleBarProps {
   onCloseTab: (id: string, e: React.MouseEvent) => void;
   onNewTab: () => void;
   isDark: boolean;
+  onOpenInstallModal?: () => void;
+  isStandalone?: boolean;
 }
 
 export const NotepadTitleBar: React.FC<NotepadTitleBarProps> = ({
@@ -18,7 +20,7 @@ export const NotepadTitleBar: React.FC<NotepadTitleBarProps> = ({
   onSelectTab,
   onCloseTab,
   onNewTab,
-  isDark
+  isDark,
 }) => {
   return (
     <div className={`h-[42px] flex items-center justify-between select-none px-2 border-b ${

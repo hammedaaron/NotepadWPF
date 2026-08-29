@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@google/genai": "^2.19.0",
+    "@types/jszip": "^3.4.1",
     "cors": "^2.8.6",
     "esbuild": "^0.28.2",
     "express": "^5.2.1",
+    "jszip": "^3.10.1",
     "lucide-react": "^1.16.0",
     "mammoth": "^1.12.1",
     "pdfjs-dist": "^6.2.108",

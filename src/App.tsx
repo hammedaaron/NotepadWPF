@@ -21,6 +21,8 @@ import { AppleNotesSidebar } from './components/AppleNotesSidebar';
 import { NestedPageDrawer } from './components/NestedPageDrawer';
 import { ConfirmDeleteModal } from './components/ConfirmDeleteModal';
 import { NotepadXRSplashScreen } from './components/NotepadXRSplashScreen';
+import { InstallToPcModal } from './components/InstallToPcModal';
+import { usePwaInstall } from './hooks/usePwaInstall';
 import { parseDocumentFile } from './utils/universalDocumentParser';
 import { exportDocument, ExportFormat } from './utils/documentExporter';
 import { INITIAL_DOCS, INITIAL_FOLDERS } from './data/initialData';
@@ -178,8 +180,12 @@ export default function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isGoToOpen, setIsGoToOpen] = useState(false);
   const [isCopilotOpen, setIsCopilotOpen] = useState(false);
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [copilotSelection, setCopilotSelection] = useState('');
   const [isLoadingFile, setIsLoadingFile] = useState(false);
+
+  // PWA Direct Install Hook
+  const pwaInfo = usePwaInstall();
 
   // Autosave & Offline tracking
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'unsaved'>('saved');
@@ -1122,6 +1128,8 @@ export default function App() {
         onCloseTab={handleCloseTab}
         onNewTab={() => handleNewTab()}
         isDark={isDark}
+        onOpenInstallModal={() => setIsInstallModalOpen(true)}
+        isStandalone={pwaInfo.isStandalone}
       />
 
       {/* 2. Menu Bar & Formatting Toolbar */}
@@ -1137,6 +1145,7 @@ export default function App() {
         onExportAs={(format: ExportFormat) => exportDocument(activeDoc, format)}
         onPrint={() => window.print()}
         onCloseTab={() => handleCloseTab(activeId)}
+        onOpenInstallModal={() => setIsInstallModalOpen(true)}
         onOpenFind={() => setFindReplaceState(prev => ({ ...prev, isOpen: true, isReplaceMode: false }))}
         onOpenReplace={() => setFindReplaceState(prev => ({ ...prev, isOpen: true, isReplaceMode: true }))}
         onOpenGoTo={() => setIsGoToOpen(true)}
@@ -1302,6 +1311,14 @@ export default function App() {
         settings={settings}
         onUpdateSettings={(newSet) => setSettings(prev => ({ ...prev, ...newSet }))}
         isDark={isDark}
+        onOpenInstallModal={() => setIsInstallModalOpen(true)}
+      />
+
+      <InstallToPcModal
+        isOpen={isInstallModalOpen}
+        onClose={() => setIsInstallModalOpen(false)}
+        isDark={isDark}
+        pwaInfo={pwaInfo}
       />
 
       <NotepadGoToModal

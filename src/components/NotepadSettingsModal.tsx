@@ -10,7 +10,9 @@ import {
   Palette, 
   Check, 
   Key, 
-  ExternalLink
+  ExternalLink,
+  Download,
+  Laptop
 } from 'lucide-react';
 import { NotepadSettings } from '../types';
 import { ACCENT_PALETTES, AccentColorKey } from '../types/accentColors';
@@ -27,6 +29,7 @@ interface NotepadSettingsModalProps {
   settings: NotepadSettings;
   onUpdateSettings: (newSettings: Partial<NotepadSettings>) => void;
   isDark: boolean;
+  onOpenInstallModal?: () => void;
 }
 
 export const NotepadSettingsModal: React.FC<NotepadSettingsModalProps> = ({
@@ -34,7 +37,8 @@ export const NotepadSettingsModal: React.FC<NotepadSettingsModalProps> = ({
   onClose,
   settings,
   onUpdateSettings,
-  isDark
+  isDark,
+  onOpenInstallModal
 }) => {
   const [aiConfig, setAiConfig] = useState<UserAiConfig>(() => getStoredAiConfig());
   const [apiKeySavedNotice, setApiKeySavedNotice] = useState(false);
@@ -84,7 +88,7 @@ export const NotepadSettingsModal: React.FC<NotepadSettingsModalProps> = ({
           <div className="flex items-center space-x-3">
             <button
               onClick={onClose}
-              className={`p-1.5 rounded-full transition-colors ${
+              className={`p-1.5 rounded-full transition-colors cursor-pointer ${
                 isDark ? 'hover:bg-[#2d2d2d] text-[#aaa]' : 'hover:bg-[#ebebeb] text-[#666]'
               }`}
               title="Back"
@@ -93,18 +97,66 @@ export const NotepadSettingsModal: React.FC<NotepadSettingsModalProps> = ({
             </button>
             <h2 className="text-base font-semibold">Settings</h2>
           </div>
-          <button
-            onClick={onClose}
-            className={`p-1.5 rounded-lg transition-colors ${
-              isDark ? 'hover:bg-[#2d2d2d] text-[#aaa]' : 'hover:bg-[#ebebeb] text-[#666]'
-            }`}
-          >
-            <X className="w-4 h-4" />
-          </button>
+          <div className="flex items-center space-x-2">
+            {onOpenInstallModal && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onOpenInstallModal();
+                }}
+                className="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Install to PC</span>
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                isDark ? 'hover:bg-[#2d2d2d] text-[#aaa]' : 'hover:bg-[#ebebeb] text-[#666]'
+              }`}
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* Settings Body */}
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6 text-sm">
+          {/* Top Feature Banner: Install to PC */}
+          {onOpenInstallModal && (
+            <div className={`p-4 rounded-xl border flex items-center justify-between gap-4 transition-all ${
+              isDark 
+                ? 'bg-gradient-to-r from-blue-950/40 to-[#262626] border-blue-800/40 text-blue-100' 
+                : 'bg-gradient-to-r from-blue-50 to-white border-blue-200 text-blue-950'
+            }`}>
+              <div className="space-y-1">
+                <div className="font-semibold text-xs flex items-center gap-2">
+                  <Laptop className="w-4 h-4 text-blue-400" />
+                  <span>Desktop App & PC Installation</span>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-semibold border border-emerald-500/30">
+                    Offline Ready
+                  </span>
+                </div>
+                <div className="text-[11.5px] opacity-75 leading-relaxed max-w-md">
+                  Install as a standalone Windows 11 desktop application with taskbar pinning, desktop shortcuts, and zero store wait times.
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onOpenInstallModal();
+                }}
+                className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs flex items-center gap-2 shrink-0 shadow-lg shadow-blue-500/25 transition-all cursor-pointer active:scale-95"
+              >
+                <Download className="w-4 h-4" />
+                <span>Install to PC</span>
+              </button>
+            </div>
+          )}
+
           {/* 1. Bring-Your-Own-Key (BYOK) AI Integration */}
           <div>
             <div className="flex items-center justify-between mb-3">
@@ -433,15 +485,63 @@ export const NotepadSettingsModal: React.FC<NotepadSettingsModalProps> = ({
               </div>
             </div>
           </div>
+
+          {/* 6. Desktop PC Installation (Direct / No Store Screening) */}
+          {onOpenInstallModal && (
+            <div>
+              <h3 className="text-xs font-semibold uppercase tracking-wider opacity-60 mb-3 flex items-center gap-1.5">
+                <Laptop className="w-3.5 h-3.5 text-blue-400" /> Desktop App & PC Installation
+              </h3>
+              <div className={`p-4 rounded-xl border flex items-center justify-between gap-4 ${
+                isDark ? 'bg-[#262626] border-[#333333]' : 'bg-white border-[#e0e0e0]'
+              }`}>
+                <div className="space-y-1">
+                  <div className="font-medium text-xs flex items-center gap-1.5">
+                    <span>Install Notepad-XR to PC</span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold">
+                      Zero Store Delay
+                    </span>
+                  </div>
+                  <div className="text-[11.5px] opacity-65 leading-relaxed">
+                    Install standalone Windows 11 app with desktop shortcuts, 100% offline capability, and no Microsoft Store review wait time.
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    onOpenInstallModal();
+                  }}
+                  className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium text-xs flex items-center gap-1.5 shrink-0 shadow-md shadow-blue-500/20 transition-all cursor-pointer"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Install Options</span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Footer */}
-        <div className={`px-6 py-3.5 border-t flex justify-end ${
+        <div className={`px-6 py-3.5 border-t flex items-center justify-between ${
           isDark ? 'bg-[#1a1a1a] border-[#2b2b2b]' : 'bg-[#f0f0f0] border-[#dedee3]'
         }`}>
+          {onOpenInstallModal ? (
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                onOpenInstallModal();
+              }}
+              className="text-xs text-blue-500 hover:text-blue-400 font-medium flex items-center gap-1.5 cursor-pointer"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Install Notepad-XR to PC...</span>
+            </button>
+          ) : <div />}
           <button
             onClick={onClose}
-            className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs transition-colors"
+            className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs transition-colors cursor-pointer"
           >
             Done
           </button>
